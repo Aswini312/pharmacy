@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+</head>
+<body>
+    <h1>Heart Disease Prediction</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+
+        <label for="chest_pain">Chest Pain Type:</label>
+        <select id="chest_pain" name="chest_pain" required>
+            <option value="0">Typical Angina</option>
+            <option value="1">Atypical Angina</option>
+            <option value="2">Non-Anginal Pain</option>
+            <option value="3">Asymptomatic</option>
+        </select><br><br>
+
+        <label for="resting_blood_pressure">Resting Blood Pressure:</label>
+        <input type="number" id="resting_blood_pressure" name="resting_blood_pressure" required><br><br>
+
+        <label for="cholesterol">Cholesterol:</label>
+        <input type="number" id="cholesterol" name="cholesterol" required><br><br>
+
+        <label for="fasting_blood_sugar">Fasting Blood Sugar:</label>
+        <select id="fasting_blood_sugar" name="fasting_blood_sugar" required>
+            <option value="0">Less than 120 mg/dl</option>
+            <option value="1">Greater than or equal to 120 mg/dl</option>
+        </select><br><br>
+
+        <label for="resting_ecg">Resting Electrocardiographic Results:</label>
+        <select id="resting_ecg" name="resting_ecg" required>
+            <option value="0">Normal</option>
+            <option value="1">Having ST-T wave abnormality</option>
+            <option value="2">Showing probable or definite left ventricular hypertrophy</option>
+        </select><br><br>
+
+        <label for="max_heart_rate">Maximum Heart Rate:</label>
+        <input type="number" id="max_heart_rate" name="max_heart_rate" required><br><br>
+
+        <label for="exercise_angina">Exercise Induced Angina:</label>
+        <select id="exercise_angina" name="exercise_angina" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="vessels_colored">Number of Vessels Colored by Fluoroscopy:</label>
+        <input type="number" id="vessels_colored" name="vessels_colored" required><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>

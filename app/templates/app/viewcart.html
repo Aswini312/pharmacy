@@ -1,0 +1,196 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}cart{% endblock title %}
+
+{% block main-content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Shopping Cart</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eec9c9;
+        }
+
+        tbody tr:hover {
+            background-color: #fce9e9;
+        }
+
+        tfoot {
+            font-weight: bold;
+        }
+
+        tfoot td {
+            background-color: #f1e1e1;
+        }
+
+       
+
+        .btn-primary {
+            background-color: #218838;
+        }
+
+        .message-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(241, 9, 9, 0.8);
+            color: rgb(95, 19, 19);
+            padding: 20px;
+            border-radius: 50% / 10px;
+            z-index: 9999;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .message-popup #message-text {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .message-popup .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="message-popup" class="message-popup">
+            <span id="message-text"></span>
+            <span class="close-btn" onclick="closeMessage()">&times;</span>
+        </div>
+        <h2>Your Shopping Cart</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.product_image.url }}" alt="{{ item.product.title }}"
+                            style="width: 100px; height: 100px" />
+                        {{ item.product.title }}
+                    </td>
+                    <td>
+                        {{ item.quantity }}
+                        <a href="{% url 'increase_quantity' item.product.id %}">+</a>
+                        <a href="{% url 'decrease_quantity' item.product.id %}">-</a>
+                    </td>
+                    <td>{{ item.product.price }}</td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-primary">Remove from
+                            Cart</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" align="right">Total:</td>
+                    <td>{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div style="text-align: center;">
+            <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+      
+
+   
+            <script>
+                // Function definitions for showMessage and closeMessage
+                function showMessage(message) {
+                  var messageText = document.getElementById("message-text");
+                  messageText.innerHTML = message;
+                  var messagePopup = document.getElementById("message-popup");
+                  messagePopup.style.display = "block";
+                }
+          
+                function closeMessage() {
+                  var messagePopup = document.getElementById("message-popup");
+                  messagePopup.style.display = "none";
+                }
+          
+                document
+                  .getElementById("forgot-password-link")
+                  .addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default link behavior
+                    showMessage("Please contact administrator");
+                  });
+              </script>
+              <script>
+                // Code to display messages in the popup
+                {% if messages %}
+                  var allMessages = "{% if messages.tags %}{{ messages.tags }}{% else %}error{% endif %}";
+                  var messageContent = "";
+                  {% for message in messages %}
+                    messageContent += "{{ message }}<br>";
+                  {% endfor %}
+                  showMessage(messageContent);
+                {% endif %}
+              </script>
+
+
+{% endblock main-content %}

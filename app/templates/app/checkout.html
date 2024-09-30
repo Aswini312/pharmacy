@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        .bill {
+            width: 21cm;
+            min-height: 10.7cm;
+            margin: 20px auto;
+            background-color: #f8f8f8;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+
+        .bill h2 {
+            text-align: center;
+            color: #333;
+            padding: 20px 0;
+            background-color: #6c6a6a;
+            margin: 0;
+            color: #fff;
+        }
+
+        .bill .date-info {
+            text-align: right;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .bill table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-top: 1px solid #ddd; /* Add a top border to the table */
+        }
+
+        .bill table,
+        .bill th,
+        .bill td {
+            border: 1px solid #ddd;
+        }
+
+        .bill th,
+        .bill td {
+            padding: 15px;
+            text-align: left;
+            color: #333;
+        }
+
+        .bill th {
+            background-color: #eee;
+            color: #333;
+        }
+
+        .bill tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .bill tfoot {
+            font-weight: bold;
+        }
+
+        .bill tfoot td {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .bill tfoot tr:hover {
+            background-color: transparent;
+        }
+
+        .merchant-info {
+            margin-top: 30px;
+        }
+
+        .merchant-info p {
+            margin: 5px 0;
+        }
+
+        .customer-info {
+            float: left;
+            width: 50%;
+            margin-top: 30px;
+        }
+
+        .customer-info p {
+            margin: 5px 0;
+        }
+
+        .footer {
+            clear: both;
+            text-align: center;
+            padding: 10px;
+            background-color: #6c6a6a;
+            color: #fff;
+        }
+    </style>
+
+    <script>
+        function getCurrentDateTime() {
+            var today = new Date();
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            var dateTimeString = today.toLocaleDateString('en-US', options) + ' ' + today.toLocaleTimeString();
+            return dateTimeString;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateInfoElement = document.getElementById('date-info');
+            if (dateInfoElement) {
+                dateInfoElement.innerHTML = getCurrentDateTime();
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div class="bill">
+        <h2>Apolo Pharmacy</h2>
+        <p id="date-info" class="date-info" style="margin-top: 5px;"></p>
+        <h2>Bill</h2>
+        <div class="merchant-info">
+          
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" align="right">Total:</td>
+                    <td>₹ {{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="footer"><h3>Thank you for shopping with us!</h3></div>
+    </div>
+</body>
+
+</html>
+

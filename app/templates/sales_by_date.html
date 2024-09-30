@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Sales by Date</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Total Sales by Date</h1>
+
+    <!-- Debugging: Print data on the page -->
+    <p>Sales Dates: {{ sales_dates }}</p>
+    <p>Total Sales: {{ total_sales }}</p>
+
+    <!-- Chart Container -->
+    <div class="chart-container">
+        <canvas id="salesChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Data passed from Django view
+        const labels = {{ sales_dates|safe }};  // Dates of sales
+        const data = {{ total_sales|safe }};   // Total sales for each date
+
+        // Ensure the data is properly formatted in the script tag
+        console.log('Sales Dates:', labels);
+        console.log('Total Sales:', data);
+
+        // Chart configuration
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'bar', // You can change to 'line' if you prefer a line chart
+            data: {
+                labels: labels,  // Dates as labels on the x-axis
+                datasets: [{
+                    label: 'Total Sales',
+                    data: data,  // Sales totals on the y-axis
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Sales'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

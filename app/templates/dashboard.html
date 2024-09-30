@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/css/dashboard.css' %}">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="cards">
+            <div class="card">
+                <h2>Total Customers</h2>
+                <p>{{ total_customers }}</p>
+            </div>
+            <div class="card">
+                <h2>Total Products</h2>
+                <p>{{ total_products }}</p>
+            </div>
+            <div class="card">
+                <h2><a href="{% url 'top_selling_products' %}">Visualisation</a></h2>
+                
+                
+
+                <a href="{% url 'sales_by_date' %}" class="btn btn-primary">View Sales by Date</a>
+            </div>
+            <div class="card">
+                <a href="{% url 'inventory_report' %}" class="btn btn-primary">Download Inventory Report</a>
+
+            </div>
+           
+        
+            <div class="card">
+                <a href="{% url 'admin_product_page' %}">View Products</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

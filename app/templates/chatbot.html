@@ -1,0 +1,168 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chatbot</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100%;
+            }
+
+            #chat-container {
+                width: 360px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                padding-top: 10px;
+            }
+
+            h1 {
+                text-align: center;
+                color: #444;
+                margin-bottom: 10px;
+            }
+
+            #chatbox {
+                flex: 1;
+                padding: 15px;
+                max-height: 400px;
+                overflow-y: auto;
+                border-bottom: 1px solid #eee;
+            }
+
+            #messages {
+                padding: 5px;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            .chat-entry {
+                margin-bottom: 15px;
+            }
+
+            .chat-entry strong {
+                display: block;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 2px;
+            }
+
+            form {
+                display: flex;
+                padding: 10px;
+                background-color: #f7f7f7;
+                border-top: 1px solid #eee;
+            }
+
+            input[type="text"] {
+                flex: 1;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                margin-right: 8px;
+                transition: border-color 0.3s;
+            }
+
+            input[type="text"]:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+
+            button {
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            /* Custom scrollbar styling */
+            #chatbox::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            #chatbox::-webkit-scrollbar-thumb {
+                background-color: #ccc;
+                border-radius: 4px;
+            }
+
+            #chatbox::-webkit-scrollbar-thumb:hover {
+                background-color: #aaa;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <div id="chat-container">
+                <h1>Chatbot</h1>
+                <div id="chatbox">
+                    <div id="messages"></div>
+                </div>
+                <form id="chat-form" action="{% url 'chat' %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="message" placeholder="Type your message..." required>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const form = document.getElementById('chat-form');
+            const messagesDiv = document.getElementById('messages');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const userMessage = formData.get('message');
+                    messagesDiv.innerHTML += `<div class="chat-entry"><strong>User:</strong> ${userMessage}</div>`;
+                    
+                    const chatbotResponse = data.response;
+
+                    messagesDiv.innerHTML += `<div class="chat-entry"><strong>Chatbot:</strong> ${chatbotResponse}</div>`;
+                    form.reset();
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to the bottom
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+    </body>
+    </html>
+

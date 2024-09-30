@@ -1,0 +1,32 @@
+<h1>Order #{{ order.id }}</h1>
+<p>User ID: {{ user_id }}</p>
+<p>Order Date: {{ order.created_at }}</p>
+<p>Total Order Price: ${{ order.total_price }}</p>
+
+<h2>Items in this order:</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Product Title</th>
+            <th>Quantity</th>
+            <th>Price per Unit</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order_items %}
+        <tr>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.product.price }}</td>
+            <td>${{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if not order.is_canceled %}
+    <a href="{% url 'cancel_order' order.id %}">Cancel Order</a>
+{% else %}
+    <p>This order has been canceled.</p>
+{% endif %}
